@@ -53,6 +53,10 @@ import tcJs from "../../assets/deckCards/JS.svg"
 import tcQs from "../../assets/deckCards/QS.svg"
 import tcKs from "../../assets/deckCards/KS.svg"
 import tcAs from "../../assets/deckCards/AS.svg"
+
+import back from "../../assets/deckCards/back.svg"
+import blank from "../../assets/deckCards/blank.svg"
+
 interface CardValues{
     [key: string]: string;
 }
@@ -118,6 +122,9 @@ export const Card = (props: Props) => {
         'Qs': tcQs,
         'Ks': tcKs,
         'As': tcAs,
+
+        'back': back,
+        '': blank,
     }
 
         return (
