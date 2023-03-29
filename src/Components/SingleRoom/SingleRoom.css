@@ -30,7 +30,7 @@ body {
 
 .container-p2 {
     bottom: 48vh;
-    left: 18vw;
+    left: 13vw;
 }
 
 .container-p3 {
@@ -45,7 +45,7 @@ body {
 
 .container-p5 {
     bottom: 48vh;
-    right: 18vw;
+    right: 13vw;
 }
 
 .container-p6 {
@@ -60,4 +60,9 @@ body {
 }
 .shared-cards > *{
     margin: 5px;
+}
+.functional-buttons{
+    position: fixed;
+    bottom: 2vw;
+    left: 50vw;
 }
