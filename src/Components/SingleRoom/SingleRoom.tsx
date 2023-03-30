@@ -16,15 +16,17 @@ export const SingleRoom = () => {
 
     const [playersCards, setPlayersCards ] = useState<string[][]> ([['','']]);
     const cardHeight = 120;
-    let dealedCards: string[][] = [];
 
-    const handleDeal = async (): Promise<string[][]> => {
-        const res = await fetch(`${apiUrl}/deck/deal`, {
-            // credentials: 'include',
-        });
-        const data = await res.json();
-        setPlayersCards(changeCardNaming(data));
-        return dealedCards;
+    const handleDeal = async () => {
+        try {
+            const res = await fetch(`${apiUrl}/deck/deal`, {
+                // credentials: 'include',
+            });
+            const data = await res.json();
+            setPlayersCards(changeCardNaming(data));
+        } catch(e) {
+            console.error(e);
+        }
     }
     return (
         <>
