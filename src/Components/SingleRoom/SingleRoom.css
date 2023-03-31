@@ -52,13 +52,13 @@ body {
     bottom: var(--top-bottom-vh);
     right: var(--left-right-vw);
 }
-.shared-cards{
+.common-cards{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%)
 }
-.shared-cards > *{
+.common-cards > *{
     margin: 5px;
 }
 .functional-buttons{

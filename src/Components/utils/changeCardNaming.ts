@@ -1,4 +1,4 @@
-interface CardArrayInterface {
+export interface CardArrayInterface {
     suit: string,
     value: number
 }
@@ -20,7 +20,7 @@ const changeValueToCardString = (value: number): string => {
     }
 }
 //change card naming from object
-export const changeCardNaming = (cardArray: CardArrayInterface[][]) => {
+export const changeCardNaming = (cardArray: CardArrayInterface[][]): string[][] | string[] => {
     const allSimplyCardName: string[][] = [];
 
     for (let i = 0; i < cardArray.length; i++) {
