@@ -1,10 +1,4 @@
-* {
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-}
-
-body {
+.single-room-container {
     background: url("../../assets/poker-table.webp") no-repeat center center fixed;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -30,7 +24,7 @@ body {
 
 .container-p2 {
     bottom: 48vh;
-    left: 18vw;
+    left: 13vw;
 }
 
 .container-p3 {
@@ -45,19 +39,24 @@ body {
 
 .container-p5 {
     bottom: 48vh;
-    right: 18vw;
+    right: 13vw;
 }
 
 .container-p6 {
     bottom: var(--top-bottom-vh);
     right: var(--left-right-vw);
 }
-.shared-cards{
+.common-cards{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%)
 }
-.shared-cards > *{
+.common-cards > *{
     margin: 5px;
+}
+.functional-buttons{
+    position: fixed;
+    bottom: 2vw;
+    left: 50vw;
 }
