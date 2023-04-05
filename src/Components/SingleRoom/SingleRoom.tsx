@@ -2,7 +2,7 @@ import "./SingleRoom.css";
 import {Player} from "../Player/Player";
 import {Card} from "../Card/Card";
 import {useEffect, useState} from "react";
-import AwesomeButtonStyles from "../Buttons/styles/Themes/theme-c137/styles.module.scss";
+import 'react-awesome-button/dist/styles.css';
 import {AwesomeButton} from "react-awesome-button";
 import {apiUrl} from "../../config/api";
 import {CardArrayInterface, changeCardNaming} from "../utils/changeCardNaming";
@@ -10,26 +10,30 @@ import {io} from "socket.io-client";
 
 const socket = io(`${apiUrl}`);
 
-export const SingleRoom = () => {
-    const playerName = "John";
-    const cards = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
-        '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
-        '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Kh', 'Ah',
-        '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'Ts', 'Js', 'Qs', 'Ks', 'As',];
-
-    const [playersCards, setPlayersCards] = useState<string[][]>([['', '']]);
-    const [commonCards, setCommonCards] = useState<string[]>(['', '', '', '', '']);
-    const cardHeight = 120;
+const PLAYER_NAME = "John";
+export function useFetchCommonCardsFromServer() {
     useEffect(() => {
         socket.emit('turn', {}, (response: CardArrayInterface[]) => {
             console.log(response)
-
         });
 
         return () => {
             socket.off('turn');
         }
     },[]);
+ }
+
+//    const CARDS = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
+//        '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
+//        '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Kh', 'Ah',
+//       '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'Ts', 'Js', 'Qs', 'Ks', 'As',];
+
+export const SingleRoom = () => {
+
+    const [playersCards, setPlayersCards] = useState<string[][]>([['', '']]);
+    const [commonCards, setCommonCards] = useState<string[]>(['', '', '', '', '']);
+
+    useFetchCommonCardsFromServer();
 
     const handleCommonCards = async (e: React.MouseEvent<HTMLButtonElement> & { target: { value: string; }; }) => {
         e.preventDefault();
@@ -54,20 +58,14 @@ export const SingleRoom = () => {
             console.log(response)
         });
     }
-    const handleDeal = async () => {
-        try {
-            const res = await fetch(`${apiUrl}/deck/deal`, {
-                // credentials: 'include',
-            });
-            const data = await res.json();
-            setPlayersCards(changeCardNaming(data) as string[][]);
-        } catch (e) {
-            console.error(e);
-        }
-    }
+    const dealCardsToPlayers = async () => {
+        const playerCards = await fetchPlayerCards();
+        setPlayersCards(changeCardNaming(data) as string[][]);
+     }
 
     return (
         <>
+        <div className="single-room-container">
             <div className="common-cards">
                 {commonCards.map((card, index) =>
                     <Card key={index} card={card} height={cardHeight}/>
@@ -99,7 +97,7 @@ export const SingleRoom = () => {
                     Next Round
                 </AwesomeButton>
             </div>
-            {/*<h1>{playersCards}</h1>*/}
+            </div>
         </>
 
     )

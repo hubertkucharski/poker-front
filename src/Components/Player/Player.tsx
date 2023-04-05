@@ -8,14 +8,13 @@ interface Props {
 
 export const Player = (props: Props) => {
     const {name, cards} = props;
-    const cardHeight = 100;
 
     return (
         <>
             <div className="player">
                 <div className="cards">
-                    <Card card={cards[0]} height={cardHeight}/>
-                    <Card card={cards[1]} height={cardHeight}/>
+                    <Card card={cards[0]} />
+                    <Card card={cards[1]} />
                 </div>
                 <div className="playerName balance avatar">
                     {name}
