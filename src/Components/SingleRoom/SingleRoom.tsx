@@ -8,6 +8,7 @@ import {observer} from "mobx-react-lite";
 import {ActivityStoreContext} from "../../stores/activityStore";
 import {apiUrl} from "../../config/api";
 import {io} from "socket.io-client";
+import {socketService} from "../../services/socket.service";
 
 const socket = io(`${apiUrl}`);
 
@@ -21,11 +22,11 @@ export const SingleRoom = observer(() => {
     const {commonCards, playersCards, setPlayerCards} = gameFlow;
 
     useEffect(() => {
-        socket.on('initRound', (response) => {
+        const unsubscribe = socketService.onInitGame((response) => {
             setPlayerCards(response);
         });
         return () => {
-            socket.off('initRound');
+            unsubscribe();
         };
     }, [setPlayerCards]);
 

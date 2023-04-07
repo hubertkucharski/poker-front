@@ -10,4 +10,11 @@ const emitEndRound = () =>{
     socket.emit('');
 }
 
-export const socketService = {socket, emitEndRound, emitInitNewGame};
+const onInitGame = (callback: (response: string[])=>void) =>{
+    socket.on('initRound', (response) => {
+        callback(response);
+    });
+    return ()=>socket.off('initRound');
+}
+
+export const socketService = {socket, emitEndRound, emitInitNewGame, onInitGame};
