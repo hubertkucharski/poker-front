@@ -19,13 +19,6 @@ export class ActivityStore{
         this.playersCards = changeCardNaming(newPlayersCards) as string[][];
     }
 
-    @action updateCards = async () => {
-        socket.emit('turn', {}, (response: CardArrayInterface[]) => {
-            const newCommonCards = changeCardNaming([response]);
-            this.commonCards = newCommonCards[0] as string[];
-
-        });
-    }
     @action startNewRound = async () => {
         socket.emit('createGameFlow', {text: 'front text', name: 'nameText'}, (response: any) => {
         });
