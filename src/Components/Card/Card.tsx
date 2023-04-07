@@ -56,12 +56,13 @@ import tcAs from "../../assets/deckCards/AS.svg"
 
 import back from "../../assets/deckCards/back.svg"
 import blank from "../../assets/deckCards/blank.svg"
+import './Card.css'
 
 interface CardValues{
     [key: string]: string;
 }
 interface Props {
-    card: string | CardValues;
+    card: string;
 }
 const CARDS: CardValues = {
     '2c': tc2c,
@@ -123,7 +124,6 @@ const CARDS: CardValues = {
     'back': back,
     '': blank,
 }
-const CARD_HEIGHT = 100;
 
 export const Card = (props: Props) => {
     const {card} = props;
@@ -131,9 +131,8 @@ export const Card = (props: Props) => {
 
         return (
             <img
-                src={CARDS[card as string]}
-                height={CARD_HEIGHT}
+                src={CARDS[card]}
                 className={`playing-card ${card}`}
-                alt={card as string} />
+                alt={card} />
         );
 }

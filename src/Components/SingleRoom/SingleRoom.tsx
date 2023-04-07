@@ -1,11 +1,15 @@
 import "./SingleRoom.css";
 import {Player} from "../Player/Player";
 import {Card} from "../Card/Card";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import 'react-awesome-button/dist/styles.css';
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import {observer} from "mobx-react-lite";
 import {ActivityStoreContext} from "../../stores/activityStore";
+import {apiUrl} from "../../config/api";
+import {io} from "socket.io-client";
+
+const socket = io(`${apiUrl}`);
 
 // const CARDS = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
 //     '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
@@ -14,7 +18,17 @@ import {ActivityStoreContext} from "../../stores/activityStore";
 
 export const SingleRoom = observer(() => {
     const gameFlow = useContext(ActivityStoreContext);
-    const {commonCards, playersNewCards} = gameFlow;
+    const {commonCards, playersCards, setPlayerCards} = gameFlow;
+
+    useEffect(() => {
+        socket.on('initRound', (response) => {
+            setPlayerCards(response);
+        });
+        return () => {
+            socket.off('initRound');
+        };
+    }, [setPlayerCards]);
+
 
     return (
         <>
@@ -24,7 +38,7 @@ export const SingleRoom = observer(() => {
                         <Card key={index} card={card}/>
                     )}
                 </div>
-                {playersNewCards.map((card, index) =>
+                {playersCards.map((card, index) =>
                     <div
                         key={index}
                         className={`container container-p${index + 1}`}

@@ -1,8 +1,8 @@
 import {action, observable, makeAutoObservable} from "mobx";
 import { createContext } from "react";
 import {io} from "socket.io-client";
-import {apiUrl} from "../config/api";
 import {CardArrayInterface, changeCardNaming} from "../Components/utils/changeCardNaming";
+import {apiUrl} from "../config/api";
 const socket = io(`${apiUrl}`);
 
 export class ActivityStore{
@@ -10,7 +10,14 @@ export class ActivityStore{
         makeAutoObservable(this, {}, {autoBind: true});
     }
     @observable commonCards = ['', '', '', '', ''];
-    @observable playersNewCards: string[][] = [['','']];
+    @observable playersCards: string[][] = [['','']];
+
+    @action setCommonCards(newCards: string[]){
+        this.commonCards = newCards;
+    }
+    @action setPlayerCards(newPlayersCards: any[]){
+        this.playersCards = changeCardNaming(newPlayersCards) as string[][];
+    }
 
     @action updateCards = async () => {
         socket.emit('turn', {}, (response: CardArrayInterface[]) => {
@@ -21,7 +28,6 @@ export class ActivityStore{
     }
     @action startNewRound = async () => {
         socket.emit('createGameFlow', {text: 'front text', name: 'nameText'}, (response: any) => {
-            this.playersNewCards = changeCardNaming(response) as string[][];
         });
     }
 
