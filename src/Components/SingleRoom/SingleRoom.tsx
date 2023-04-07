@@ -1,14 +1,14 @@
 import "./SingleRoom.css";
-import {Player} from "../Player/Player";
-import {Card} from "../Card/Card";
-import {useContext, useEffect, useState} from "react";
-import 'react-awesome-button/dist/styles.css';
+import { Player } from "../Player/Player";
+import { Card } from "../Card/Card";
+import { useContext, useEffect, useState } from "react";
+import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
-import {observer} from "mobx-react-lite";
-import {ActivityStoreContext} from "../../stores/activityStore";
-import {apiUrl} from "../../config/api";
-import {io} from "socket.io-client";
-import {socketService} from "../../services/socket.service";
+import { observer } from "mobx-react-lite";
+import { ActivityStoreContext } from "../../stores/activityStore";
+import { apiUrl } from "../../config/api";
+import { io } from "socket.io-client";
+import { socketService } from "../../services/socket.service";
 
 const socket = io(`${apiUrl}`);
 
@@ -18,37 +18,33 @@ const socket = io(`${apiUrl}`);
 //     '2s', '3s', '4s', '5s', '6s', '7s', '8s', '9s', 'Ts', 'Js', 'Qs', 'Ks', 'As',];
 
 export const SingleRoom = observer(() => {
-    const gameFlow = useContext(ActivityStoreContext);
-    const {commonCards, playersCards, setPlayerCards} = gameFlow;
+  const gameFlow = useContext(ActivityStoreContext);
+  const { commonCards, playersCards, setPlayerCards } = gameFlow;
 
-    useEffect(() => {
-        const unsubscribe = socketService.onInitGame((response) => {
-            setPlayerCards(response);
-        });
-        return () => {
-            unsubscribe();
-        };
-    }, [setPlayerCards]);
+  useEffect(() => {
+    const unsubscribe = socketService.onInitGame((response) => {
+      setPlayerCards(response);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [setPlayerCards]);
 
-
-    return (
-        <>
-            <div className="single-room-container">
-                <div className="common-cards">
-                    {commonCards.map((card, index) =>
-                        <Card key={index} card={card}/>
-                    )}
-                </div>
-                {playersCards.map((card, index) =>
-                    <div
-                        key={index}
-                        className={`container container-p${index + 1}`}
-                    >
-                        <Player name={`Player no. ${index}`} cards={card}/>
-                    </div>
-                )}
-                <FunctionalButtons/>
-            </div>
-        </>
-    )
+  return (
+    <>
+      <div className="single-room-container">
+        <div className="common-cards">
+          {commonCards.map((card, index) => (
+            <Card key={index} card={card} />
+          ))}
+        </div>
+        {playersCards.map((card, index) => (
+          <div key={index} className={`container container-p${index + 1}`}>
+            <Player name={`Player no. ${index}`} cards={card} />
+          </div>
+        ))}
+        <FunctionalButtons />
+      </div>
+    </>
+  );
 });

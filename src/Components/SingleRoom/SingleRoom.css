@@ -1,63 +1,63 @@
 .single-room-container {
-    background: url("../../assets/poker-table.webp") no-repeat center center fixed;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    color: #eee;
-    height: 100vh;
+  background: url("../../assets/poker-table.webp") no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  color: #eee;
+  height: 100vh;
 }
 
 .container {
-    display: flex;
-    position: fixed;
-    --left-right-vw: 30vw;
-    --top-bottom-vh: 13vh;
-    background-color: #000;
-    border: 2px solid dimgray;
-    border-radius: 8px;
+  display: flex;
+  position: fixed;
+  --left-right-vw: 30vw;
+  --top-bottom-vh: 13vh;
+  background-color: #000;
+  border: 2px solid dimgray;
+  border-radius: 8px;
 }
 
 .container-p1 {
-    bottom: var(--top-bottom-vh);
-    left: var(--left-right-vw);
+  bottom: var(--top-bottom-vh);
+  left: var(--left-right-vw);
 }
 
 .container-p2 {
-    bottom: 48vh;
-    left: 13vw;
+  bottom: 48vh;
+  left: 13vw;
 }
 
 .container-p3 {
-    top: var(--top-bottom-vh);
-    left: var(--left-right-vw);
+  top: var(--top-bottom-vh);
+  left: var(--left-right-vw);
 }
 
 .container-p4 {
-    top: var(--top-bottom-vh);
-    right: var(--left-right-vw);
+  top: var(--top-bottom-vh);
+  right: var(--left-right-vw);
 }
 
 .container-p5 {
-    bottom: 48vh;
-    right: 13vw;
+  bottom: 48vh;
+  right: 13vw;
 }
 
 .container-p6 {
-    bottom: var(--top-bottom-vh);
-    right: var(--left-right-vw);
+  bottom: var(--top-bottom-vh);
+  right: var(--left-right-vw);
 }
-.common-cards{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%)
+.common-cards {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
-.common-cards > *{
-    margin: 5px;
+.common-cards > * {
+  margin: 5px;
 }
-.functional-buttons{
-    position: fixed;
-    bottom: 2vw;
-    left: 50vw;
+.functional-buttons {
+  position: fixed;
+  bottom: 2vw;
+  left: 50vw;
 }
