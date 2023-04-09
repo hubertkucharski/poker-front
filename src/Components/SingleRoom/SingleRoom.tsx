@@ -6,11 +6,8 @@ import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
 import { ActivityStoreContext } from "../../stores/activityStore";
-import { apiUrl } from "../../config/api";
-import { io } from "socket.io-client";
 import { socketService } from "../../services/socket.service";
-
-const socket = io(`${apiUrl}`);
+import { CardArrayInterface } from "../utils/changeCardNaming";
 
 // const CARDS = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
 //     '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
@@ -19,16 +16,30 @@ const socket = io(`${apiUrl}`);
 
 export const SingleRoom = observer(() => {
   const gameFlow = useContext(ActivityStoreContext);
-  const { commonCards, playersCards, setPlayerCards } = gameFlow;
+  const { commonCards, playersCards, setPlayerCards, setCommonCards } =
+    gameFlow;
 
   useEffect(() => {
-    const unsubscribe = socketService.onInitGame((response) => {
-      setPlayerCards(response);
-    });
+    const unsubscribe = socketService.onInitGame(
+      (response: CardArrayInterface[][]) => {
+        setPlayerCards(response);
+      }
+    );
     return () => {
       unsubscribe();
     };
   }, [setPlayerCards]);
+
+  useEffect(() => {
+    const unsubscribe = socketService.onEndRound(
+      (response: CardArrayInterface[]) => {
+        setCommonCards(response);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, [setCommonCards]);
 
   return (
     <>
