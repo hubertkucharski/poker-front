@@ -7,7 +7,7 @@ import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
 import { ActivityStoreContext } from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
-import { CardArrayInterface } from "../utils/changeCardNaming";
+import { Cards } from "../utils/changeCardNaming";
 
 // const CARDS = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
 //     '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
@@ -21,7 +21,7 @@ export const SingleRoom = observer(() => {
 
   useEffect(() => {
     const unsubscribe = socketService.onInitGame(
-      (response: CardArrayInterface[][]) => {
+      (response: Cards[][]) => {
         setPlayerCards(response);
       }
     );
@@ -32,7 +32,7 @@ export const SingleRoom = observer(() => {
 
   useEffect(() => {
     const unsubscribe = socketService.onEndRound(
-      (response: CardArrayInterface[]) => {
+      (response: Cards[]) => {
         setCommonCards(response);
       }
     );

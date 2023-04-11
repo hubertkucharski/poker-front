@@ -1,4 +1,6 @@
-export interface CardArrayInterface {
+import { CommonCards } from "../types/types";
+
+export interface Cards {
   suit: string;
   value: number;
 }
@@ -21,13 +23,13 @@ const changeValueToCardString = (value: number): string => {
 };
 //change card naming from object
 export const changeCardNaming = (
-  cardArray: CardArrayInterface[][]
-): string[][] | string[] => {
-  const allSimplyCardName: string[][] = [];
+  cardArray: Cards[][]
+): CommonCards[] | CommonCards => {
+  const allSimplyCardName: CommonCards[] = [];
 
   for (let i = 0; i < cardArray.length; i++) {
     const innerArray = cardArray[i];
-    let simplyCardName: string[] = [];
+    let simplyCardName: CommonCards = [];
 
     for (let j = 0; j < innerArray.length; j++) {
       const currentCard = innerArray[j];

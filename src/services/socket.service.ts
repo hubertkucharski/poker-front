@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { apiUrl } from "../config/api";
-import { CardArrayInterface } from "../Components/utils/changeCardNaming";
+import { Cards } from "../Components/utils/changeCardNaming";
 
 const socket = io(`${apiUrl}`);
 
@@ -12,14 +12,14 @@ const emitEndRound = () => {
   socket.emit("endRound");
 };
 
-const onEndRound = (callback: (response: CardArrayInterface[]) => void) => {
+const onEndRound = (callback: (response: Cards[]) => void) => {
   socket.on("endRound", (response) => {
     callback(response);
   });
   return () => socket.off("endRound");
 };
 
-const onInitGame = (callback: (response: CardArrayInterface[][]) => void) => {
+const onInitGame = (callback: (response: Cards[][]) => void) => {
   socket.on("initRound", (response) => {
     callback(response);
   });
