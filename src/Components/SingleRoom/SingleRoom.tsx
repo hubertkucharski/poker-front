@@ -1,7 +1,7 @@
 import "./SingleRoom.css";
 import { Player } from "../Player/Player";
 import { Card } from "../Card/Card";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect } from "react";
 import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
@@ -16,26 +16,38 @@ import { Cards } from "../utils/changeCardNaming";
 
 export const SingleRoom = observer(() => {
   const gameFlow = useContext(ActivityStoreContext);
-  const { commonCards, playersCards, setPlayerCards, setCommonCards } =
-    gameFlow;
+  const {
+    commonCards,
+    playersCards,
+    playerIndex,
+    setPlayerCards,
+    setCommonCards,
+    setPlayerIndex,
+  } = gameFlow;
 
   useEffect(() => {
-    const unsubscribe = socketService.onInitGame(
-      (response: Cards[][]) => {
-        setPlayerCards(response);
-      }
-    );
+    const unsubscribe = socketService.onJoinGame((playerIndex: number) => {
+      console.log(playerIndex);
+      setPlayerIndex(playerIndex);
+    });
+    return () => {
+      unsubscribe();
+    };
+  }, [setPlayerIndex]);
+
+  useEffect(() => {
+    const unsubscribe = socketService.onInitGame((response: Cards[][]) => {
+      setPlayerCards(response);
+    });
     return () => {
       unsubscribe();
     };
   }, [setPlayerCards]);
 
   useEffect(() => {
-    const unsubscribe = socketService.onEndRound(
-      (response: Cards[]) => {
-        setCommonCards(response);
-      }
-    );
+    const unsubscribe = socketService.onEndRound((response: Cards[]) => {
+      setCommonCards(response);
+    });
     return () => {
       unsubscribe();
     };
@@ -51,7 +63,10 @@ export const SingleRoom = observer(() => {
         </div>
         {playersCards.map((card, index) => (
           <div key={index} className={`container container-p${index + 1}`}>
-            <Player name={`Player no. ${index}`} cards={card} />
+            <Player
+              name={`Player no. ${index}`}
+              cards={index === playerIndex ? card : ["back", "back"]}
+            />
           </div>
         ))}
         <FunctionalButtons />
