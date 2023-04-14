@@ -1,4 +1,4 @@
-import { CommonCards } from "../types/types";
+import { CommonCards } from "../../types/types";
 
 export interface Cards {
   suit: string;

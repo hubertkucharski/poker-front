@@ -4,12 +4,22 @@ import { Cards } from "../Components/utils/changeCardNaming";
 
 const socket = io(`${apiUrl}`);
 
+const emitJoinGame = () => {
+  socket.emit("joinGameRoom");
+};
 const emitInitNewGame = () => {
-  socket.emit("createGameFlow");
+  socket.emit("createGameFlow", { roomId: "room-1" });
 };
 
 const emitEndRound = () => {
   socket.emit("endRound");
+};
+
+const onJoinGame = (callback: (playerIndex: number) => void) => {
+  socket.on("joinGame", (playerIndex) => {
+    callback(playerIndex);
+  });
+  return () => socket.off("joinGame");
 };
 
 const onEndRound = (callback: (response: Cards[]) => void) => {
@@ -32,4 +42,6 @@ export const socketService = {
   onEndRound,
   emitInitNewGame,
   onInitGame,
+  emitJoinGame,
+  onJoinGame,
 };
