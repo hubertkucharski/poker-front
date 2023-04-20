@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
-import { ActivityStoreContext } from "../../stores/activityStore";
+import { ActivityStoreContext, CurrentState } from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
 import { Cards } from "../utils/changeCardNaming";
 
@@ -20,9 +20,11 @@ export const SingleRoom = observer(() => {
     commonCards,
     playersCards,
     playerIndex,
+    currentState,
     setPlayerCards,
     setCommonCards,
     setPlayerIndex,
+    setCurrentState,
   } = gameFlow;
 
   useEffect(() => {
@@ -36,13 +38,24 @@ export const SingleRoom = observer(() => {
   }, [setPlayerIndex]);
 
   useEffect(() => {
-    const unsubscribe = socketService.onInitGame((response: Cards[][]) => {
+    const unsubscribe = socketService.onInitGame((response: Cards[]) => {
       setPlayerCards(response);
     });
     return () => {
       unsubscribe();
     };
   }, [setPlayerCards]);
+
+  useEffect(() => {
+    const unsubscribe = socketService.onCurrentGameState(
+      (response: CurrentState) => {
+        setCurrentState(response);
+      }
+    );
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const unsubscribe = socketService.onEndRound((response: Cards[]) => {
@@ -61,14 +74,9 @@ export const SingleRoom = observer(() => {
             <Card key={index} card={card} />
           ))}
         </div>
-        {playersCards.map((card, index) => (
-          <div key={index} className={`container container-p${index + 1}`}>
-            <Player
-              name={`Player no. ${index}`}
-              cards={index === playerIndex ? card : ["back", "back"]}
-            />
-          </div>
-        ))}
+        <div className={`container container-p${+playerIndex + 1}`}>
+          {<Player name={`Player no. ${playerIndex}`} cards={playersCards} />}
+        </div>
         <FunctionalButtons />
       </div>
     </>
