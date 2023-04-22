@@ -11,20 +11,20 @@ const FunctionalButtons = observer(() => {
     e.preventDefault();
     socketService.emitInitNewGame();
   };
-  const endRound = async (
+  const call = async (
     e: React.MouseEvent<HTMLButtonElement> & { target: { value: string } }
   ) => {
     e.preventDefault();
-    socketService.emitEndRound();
+    socketService.emitCall();
   };
 
   return (
     <div className="functional-buttons">
-      <AwesomeButton type="secondary" onPress={startNewRound}>
+      <AwesomeButton type="primary" onPress={startNewRound}>
         Start Game
       </AwesomeButton>
-      <AwesomeButton type="secondary" onPress={endRound}>
-        End Round
+      <AwesomeButton type="secondary" onPress={call}>
+        Call
       </AwesomeButton>
     </div>
   );
