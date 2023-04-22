@@ -2,15 +2,16 @@ import { action, observable, makeAutoObservable } from "mobx";
 import { createContext } from "react";
 import { Cards, changeCardNaming } from "../Components/utils/changeCardNaming";
 import { CommonCards } from "../types/types";
-
-interface CheckResult {
-  name: string;
-}
+//
+// interface CheckResult {
+//   name: string;
+// }
 export interface CurrentState {
   commonCards: Cards[];
   pot: number;
   playerWon: number;
-  checkResult: CheckResult;
+  checkResult: string;
+  activePlayer: number;
 }
 
 const DEFAULT_COMMON_CARDS = ["", "", "", "", ""];
@@ -28,9 +29,8 @@ export class ActivityStore {
   @observable currentState: CommonCards = DEFAULT_COMMON_CARDS;
   @observable pot: number = DEFAULT_POT;
   @observable playerWon: number = DEFAULT_PLAYER_INDEX;
-  @observable checkResult: CheckResult = {
-    name: "",
-  };
+  @observable activePlayer: number = DEFAULT_PLAYER_INDEX;
+  @observable checkResult: string = "";
 
   @action setCommonCards(newCards: Cards[]) {
     this.commonCards = changeCardNaming([newCards])[0] as CommonCards;
@@ -42,12 +42,13 @@ export class ActivityStore {
     this.playerIndex = newPlayerIndex;
   }
   @action setCurrentState(newCurrentState: CurrentState) {
-    this.commonCards = changeCardNaming([
-      newCurrentState.commonCards,
-    ])[0] as CommonCards;
-    this.pot = newCurrentState.pot;
-    this.checkResult = newCurrentState.checkResult;
-    this.playerWon = newCurrentState.playerWon;
+    const { commonCards, activePlayer, playerWon, pot, checkResult } =
+      newCurrentState;
+    this.commonCards = changeCardNaming([commonCards])[0] as CommonCards;
+    this.pot = pot;
+    this.checkResult = checkResult;
+    this.playerWon = playerWon;
+    this.activePlayer = activePlayer;
   }
 }
 export const ActivityStoreContext = createContext(new ActivityStore());
