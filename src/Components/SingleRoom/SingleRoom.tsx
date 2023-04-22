@@ -5,7 +5,11 @@ import { useContext, useEffect } from "react";
 import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
-import { ActivityStoreContext, CurrentState, DEFAULT_PLAYER_INDEX } from "../../stores/activityStore";
+import {
+  ActivityStoreContext,
+  CurrentState,
+  DEFAULT_PLAYER_INDEX,
+} from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
 import { Cards } from "../utils/changeCardNaming";
 
@@ -23,6 +27,7 @@ export const SingleRoom = observer(() => {
     playersCards,
     playerIndex,
     checkResult,
+    activePlayer,
     setPlayerCards,
     setCommonCards,
     setPlayerIndex,
@@ -78,12 +83,12 @@ export const SingleRoom = observer(() => {
           ))}
         </div>
         {playerWon === DEFAULT_PLAYER_INDEX || (
-          <div className="result">{`Player number ${playerWon} won, with ${checkResult.name}.`}</div>
+          <div className="result">{`Player number ${playerWon} won, with ${checkResult}.`}</div>
         )}
         <div className={`container container-p${+playerIndex + 1}`}>
           {<Player name={`Player no. ${playerIndex}`} cards={playersCards} />}
         </div>
-        <FunctionalButtons />
+        {+playerIndex === activePlayer && <FunctionalButtons />}
       </div>
     </>
   );
