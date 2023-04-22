@@ -56,6 +56,20 @@
 .common-cards > * {
   margin: 5px;
 }
+.pot{
+  position: absolute;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
+}
+.result {
+  position: absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1.7rem;
+}
 .functional-buttons {
   position: fixed;
   bottom: 2vw;

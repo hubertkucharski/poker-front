@@ -5,7 +5,7 @@ import { useContext, useEffect } from "react";
 import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
-import { ActivityStoreContext, CurrentState } from "../../stores/activityStore";
+import { ActivityStoreContext, CurrentState, DEFAULT_PLAYER_INDEX } from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
 import { Cards } from "../utils/changeCardNaming";
 
@@ -17,10 +17,12 @@ import { Cards } from "../utils/changeCardNaming";
 export const SingleRoom = observer(() => {
   const gameFlow = useContext(ActivityStoreContext);
   const {
+    pot,
+    playerWon,
     commonCards,
     playersCards,
     playerIndex,
-    currentState,
+    checkResult,
     setPlayerCards,
     setCommonCards,
     setPlayerIndex,
@@ -55,11 +57,11 @@ export const SingleRoom = observer(() => {
     return () => {
       unsubscribe();
     };
-  }, []);
+  }, [setCurrentState, setCommonCards]);
 
   useEffect(() => {
-    const unsubscribe = socketService.onEndRound((response: Cards[]) => {
-      setCommonCards(response);
+    const unsubscribe = socketService.onCall((response: CurrentState) => {
+      // setCurrentState(response);
     });
     return () => {
       unsubscribe();
@@ -69,11 +71,15 @@ export const SingleRoom = observer(() => {
   return (
     <>
       <div className="single-room-container">
+        <div className="pot">Pot: {pot}</div>
         <div className="common-cards">
           {commonCards.map((card, index) => (
             <Card key={index} card={card} />
           ))}
         </div>
+        {playerWon === DEFAULT_PLAYER_INDEX || (
+          <div className="result">{`Player number ${playerWon} won, with ${checkResult.name}.`}</div>
+        )}
         <div className={`container container-p${+playerIndex + 1}`}>
           {<Player name={`Player no. ${playerIndex}`} cards={playersCards} />}
         </div>

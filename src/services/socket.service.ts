@@ -17,6 +17,9 @@ const emitInitNewGame = () => {
 const emitEndRound = () => {
   socket.emit("endRound");
 };
+const emitCall = () => {
+  socket.emit("call");
+};
 
 const onJoinGame = (callback: (playerIndex: number) => void) => {
   socket.on("joinGame", (playerIndex) => {
@@ -25,11 +28,11 @@ const onJoinGame = (callback: (playerIndex: number) => void) => {
   return () => socket.off("joinGame");
 };
 
-const onEndRound = (callback: (response: Cards[]) => void) => {
-  socket.on("endRound", (response) => {
-    callback(response);
+const onCall = (callback: (newGameState: CurrentState) => void) => {
+  socket.on("call", (newGameState) => {
+    callback(newGameState);
   });
-  return () => socket.off("endRound");
+  return () => socket.off("call");
 };
 
 const onInitGame = (callback: (response: Cards[]) => void) => {
@@ -42,16 +45,16 @@ const onInitGame = (callback: (response: Cards[]) => void) => {
 
 const onCurrentGameState = (callback: (response: CurrentState) => void) => {
   socket.on("currentState", (response) => {
-    console.log(response);
     callback(response);
   });
-  return () => socket.off("initRound");
+  return () => socket.off("currentState");
 };
 
 export const socketService = {
   socket,
   emitEndRound,
-  onEndRound,
+  emitCall,
+  onCall,
   emitInitNewGame,
   onInitGame,
   emitJoinGame,
