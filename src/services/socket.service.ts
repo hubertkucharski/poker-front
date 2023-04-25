@@ -20,6 +20,9 @@ const emitEndRound = () => {
 const emitCall = () => {
   socket.emit("call");
 };
+const emitFold = () => {
+  socket.emit("fold");
+};
 
 const onJoinGame = (callback: (playerIndex: number) => void) => {
   socket.on("joinGame", (playerIndex) => {
@@ -30,6 +33,12 @@ const onJoinGame = (callback: (playerIndex: number) => void) => {
 
 const onCall = (callback: (newGameState: CurrentState) => void) => {
   socket.on("call", (newGameState) => {
+    callback(newGameState);
+  });
+  return () => socket.off("call");
+};
+const onFold = (callback: (newGameState: CurrentState) => void) => {
+  socket.on("fold", (newGameState) => {
     callback(newGameState);
   });
   return () => socket.off("call");
@@ -54,7 +63,9 @@ export const socketService = {
   socket,
   emitEndRound,
   emitCall,
+  emitFold,
   onCall,
+  onFold,
   emitInitNewGame,
   onInitGame,
   emitJoinGame,

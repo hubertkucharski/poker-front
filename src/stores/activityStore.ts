@@ -36,7 +36,9 @@ export class ActivityStore {
     this.commonCards = changeCardNaming([newCards])[0] as CommonCards;
   }
   @action setPlayerCards(newPlayersCards: Cards[]) {
-    this.playersCards = changeCardNaming([newPlayersCards]) as CommonCards;
+    this.playersCards = newPlayersCards
+      ? (changeCardNaming([newPlayersCards]) as CommonCards)
+      : ["", ""];
   }
   @action setPlayerIndex(newPlayerIndex: number) {
     this.playerIndex = newPlayerIndex;
