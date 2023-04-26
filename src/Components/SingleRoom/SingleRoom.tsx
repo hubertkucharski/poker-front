@@ -82,9 +82,13 @@ export const SingleRoom = observer(() => {
             <Card key={index} card={card} />
           ))}
         </div>
-        {playerWon === DEFAULT_PLAYER_INDEX || (
-          <div className="result">{`Player number ${playerWon} won, with ${checkResult}.`}</div>
-        )}
+        <div className="result">
+          {activePlayer >= 0 && `Waiting for player no. ${activePlayer}.`}
+          {playerWon === DEFAULT_PLAYER_INDEX ||
+            `Player number ${playerWon} wins${
+              checkResult && ", with: "
+            }${checkResult}.`}
+        </div>
         <div className={`container container-p${+playerIndex + 1}`}>
           {<Player name={`Player no. ${playerIndex}`} cards={playersCards} />}
         </div>

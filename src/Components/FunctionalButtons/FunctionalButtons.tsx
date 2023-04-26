@@ -17,6 +17,12 @@ const FunctionalButtons = observer(() => {
     e.preventDefault();
     socketService.emitCall();
   };
+  const fold = async (
+    e: React.MouseEvent<HTMLButtonElement> & { target: { value: string } }
+  ) => {
+    e.preventDefault();
+    socketService.emitFold();
+  };
 
   return (
     <div className="functional-buttons">
@@ -25,6 +31,9 @@ const FunctionalButtons = observer(() => {
       </AwesomeButton>
       <AwesomeButton type="secondary" onPress={call}>
         Call
+      </AwesomeButton>
+      <AwesomeButton type="secondary" onPress={fold}>
+        Fold
       </AwesomeButton>
     </div>
   );
