@@ -8,11 +8,16 @@ import { observer } from "mobx-react-lite";
 import {
   ActivityStoreContext,
   CurrentState,
+  DEFAULT_PLAYER_CARDS,
   DEFAULT_PLAYER_INDEX,
 } from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
 import { Cards } from "../utils/changeCardNaming";
 
+export interface PlayerCards {
+  playerIndex: number;
+  playerHand: Cards[];
+}
 // const CARDS = ['2c', '3c', '4c', '5c', '6c', '7c', '8c', '9c', 'Tc', 'Jc', 'Qc', 'Kc', 'Ac',
 //     '2d', '3d', '4d', '5d', '6d', '7d', '8d', '9d', 'Td', 'Jd', 'Qd', 'Kd', 'Ad',
 //     '2h', '3h', '4h', '5h', '6h', '7h', '8h', '9h', 'Th', 'Jh', 'Qh', 'Kh', 'Ah',
@@ -24,28 +29,18 @@ export const SingleRoom = observer(() => {
     pot,
     playerWon,
     commonCards,
-    playersCards,
+    playerCards,
     playerIndex,
+    indexAndBalance,
     checkResult,
     activePlayer,
     setPlayerCards,
     setCommonCards,
-    setPlayerIndex,
     setCurrentState,
   } = gameFlow;
 
   useEffect(() => {
-    const unsubscribe = socketService.onJoinGame((playerIndex: number) => {
-      console.log(playerIndex);
-      setPlayerIndex(playerIndex);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [setPlayerIndex]);
-
-  useEffect(() => {
-    const unsubscribe = socketService.onInitGame((response: Cards[]) => {
+    const unsubscribe = socketService.onInitGame((response: PlayerCards) => {
       setPlayerCards(response);
     });
     return () => {
@@ -64,17 +59,9 @@ export const SingleRoom = observer(() => {
     };
   }, [setCurrentState, setCommonCards]);
 
-  useEffect(() => {
-    const unsubscribe = socketService.onCall((response: CurrentState) => {
-      // setCurrentState(response);
-    });
-    return () => {
-      unsubscribe();
-    };
-  }, [setCommonCards]);
-
   return (
     <>
+      <div></div>
       <div className="single-room-container">
         <div className="pot">Pot: {pot}</div>
         <div className="common-cards">
@@ -89,9 +76,21 @@ export const SingleRoom = observer(() => {
               checkResult && ", with: "
             }${checkResult}.`}
         </div>
-        <div className={`container container-p${+playerIndex + 1}`}>
-          {<Player name={`Player no. ${playerIndex}`} cards={playersCards} />}
-        </div>
+        {indexAndBalance.map((player) => (
+          <div
+            key={player.playerIndex}
+            className={`container container-p${+player.playerIndex + 1}`}
+          >
+            <Player
+              name={`Player no. ${player.playerIndex} | Chips: ${player.balance}`}
+              cards={
+                player.playerIndex === playerIndex
+                  ? playerCards
+                  : DEFAULT_PLAYER_CARDS
+              }
+            />
+          </div>
+        ))}
         {+playerIndex === activePlayer && <FunctionalButtons />}
       </div>
     </>

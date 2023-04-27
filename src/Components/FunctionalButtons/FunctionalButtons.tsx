@@ -23,17 +23,26 @@ const FunctionalButtons = observer(() => {
     e.preventDefault();
     socketService.emitFold();
   };
+  const raise = async (
+    e: React.MouseEvent<HTMLButtonElement> & { target: { value: string } }
+  ) => {
+    e.preventDefault();
+    socketService.emitRaise();
+  };
 
   return (
     <div className="functional-buttons">
       <AwesomeButton type="primary" onPress={startNewRound}>
         Start Game
       </AwesomeButton>
-      <AwesomeButton type="secondary" onPress={call}>
-        Call
-      </AwesomeButton>
       <AwesomeButton type="secondary" onPress={fold}>
         Fold
+      </AwesomeButton>
+      <AwesomeButton type="secondary" onPress={call}>
+        Check/Call
+      </AwesomeButton>
+      <AwesomeButton type="secondary" onPress={raise}>
+        Raise to 50
       </AwesomeButton>
     </div>
   );

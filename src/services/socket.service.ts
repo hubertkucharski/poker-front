@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 import { apiUrl } from "../config/api";
-import { Cards } from "../Components/utils/changeCardNaming";
+import { PlayerCards } from "../Components/SingleRoom/SingleRoom";
 import { CurrentState } from "../stores/activityStore";
 
 const socket = io(`${apiUrl}`);
@@ -23,10 +23,17 @@ const emitCall = () => {
 const emitFold = () => {
   socket.emit("fold");
 };
+const emitRaise = () => {
+  socket.emit("raise", 50);
+};
 
-const onJoinGame = (callback: (playerIndex: number) => void) => {
-  socket.on("joinGame", (playerIndex) => {
-    callback(playerIndex);
+const onJoinGame = (
+  callback: ([{ playerIndex, balance }]: [
+    { playerIndex: number; balance: number }
+  ]) => void
+) => {
+  socket.on("joinGame", (playerIndexAtTableAndBalance) => {
+    callback(playerIndexAtTableAndBalance);
   });
   return () => socket.off("joinGame");
 };
@@ -41,12 +48,13 @@ const onFold = (callback: (newGameState: CurrentState) => void) => {
   socket.on("fold", (newGameState) => {
     callback(newGameState);
   });
-  return () => socket.off("call");
+  return () => socket.off("fold");
 };
 
-const onInitGame = (callback: (response: Cards[]) => void) => {
+const onInitGame = (
+  callback: (response: PlayerCards) => void
+) => {
   socket.on("initRound", (response) => {
-    console.log(response);
     callback(response);
   });
   return () => socket.off("initRound");
@@ -64,6 +72,7 @@ export const socketService = {
   emitEndRound,
   emitCall,
   emitFold,
+  emitRaise,
   onCall,
   onFold,
   emitInitNewGame,
