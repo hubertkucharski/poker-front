@@ -23,8 +23,8 @@ const emitCall = () => {
 const emitFold = () => {
   socket.emit("fold");
 };
-const emitRaise = () => {
-  socket.emit("raise", 50);
+const emitRaise = (value: number) => {
+  socket.emit("raise", value);
 };
 
 const onJoinGame = (
@@ -51,9 +51,7 @@ const onFold = (callback: (newGameState: CurrentState) => void) => {
   return () => socket.off("fold");
 };
 
-const onInitGame = (
-  callback: (response: PlayerCards) => void
-) => {
+const onInitGame = (callback: (response: PlayerCards) => void) => {
   socket.on("initRound", (response) => {
     callback(response);
   });

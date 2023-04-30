@@ -10,9 +10,11 @@ import {
   CurrentState,
   DEFAULT_PLAYER_CARDS,
   DEFAULT_PLAYER_INDEX,
+  PlayersFinalResults,
 } from "../../stores/activityStore";
 import { socketService } from "../../services/socket.service";
-import { Cards } from "../utils/changeCardNaming";
+import { Cards, changeCardNaming } from "../utils/changeCardNaming";
+import { CommonCards } from "../../types/types";
 
 export interface PlayerCards {
   playerIndex: number;
@@ -31,7 +33,7 @@ export const SingleRoom = observer(() => {
     commonCards,
     playerCards,
     playerIndex,
-    indexAndBalance,
+    players,
     checkResult,
     activePlayer,
     setPlayerCards,
@@ -59,6 +61,16 @@ export const SingleRoom = observer(() => {
     };
   }, [setCurrentState, setCommonCards]);
 
+  const getPlayerCards = (player: PlayersFinalResults): CommonCards => {
+    if (playerWon !== DEFAULT_PLAYER_INDEX) {
+      return player.hand
+        ? (changeCardNaming([player.hand]) as CommonCards[])[0]
+        : ["back", "back"];
+    }
+    if (player.playerIndex === playerIndex) {
+      return playerCards;
+    } else return DEFAULT_PLAYER_CARDS;
+  };
   return (
     <>
       <div></div>
@@ -76,19 +88,17 @@ export const SingleRoom = observer(() => {
               checkResult && ", with: "
             }${checkResult}.`}
         </div>
-        {indexAndBalance.map((player) => (
+        {players.map((player) => (
           <div
             key={player.playerIndex}
             className={`container container-p${+player.playerIndex + 1}`}
           >
             <Player
               name={`Player no. ${player.playerIndex} | Chips: ${player.balance}`}
-              cards={
-                player.playerIndex === playerIndex
-                  ? playerCards
-                  : DEFAULT_PLAYER_CARDS
-              }
+              cards={getPlayerCards(player)}
             />
+            {player.currentBet}
+            <FunctionalButtons />
           </div>
         ))}
         {+playerIndex === activePlayer && <FunctionalButtons />}

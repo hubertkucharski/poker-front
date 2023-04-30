@@ -6,14 +6,26 @@ import { CommonCards } from "../types/types";
 // interface CheckResult {
 //   name: string;
 // }
+export interface PlayerIndexBalance {
+  playerIndex: number;
+  balance: number;
+}
+export interface PlayersFinalResults {
+  playerIndex: number;
+  balance: number;
+  money: number;
+  currentBet: number;
+  hand: Cards[];
+}
 export interface CurrentState {
   commonCards: Cards[];
   pot: number;
+  currentMaxBet: number;
   playerWon: number;
   checkResult: string;
   activePlayer: number;
-  players: { money: number; currentBet: number };
-  indexAndBalance: [{ playerIndex: number; balance: number }];
+  players: [PlayersFinalResults];
+  indexAndBalance: [PlayerIndexBalance];
 }
 
 const DEFAULT_COMMON_CARDS = ["", "", "", "", ""];
@@ -31,16 +43,27 @@ export class ActivityStore {
   @observable playerBalance: number = DEFAULT_POT;
   @observable currentState: CommonCards = DEFAULT_COMMON_CARDS;
   @observable pot: number = DEFAULT_POT;
+  @observable currentMaxBet: number = DEFAULT_POT;
   @observable playerWon: number = DEFAULT_PLAYER_INDEX;
   @observable activePlayer: number = DEFAULT_PLAYER_INDEX;
   @observable checkResult: string = "";
-  @observable indexAndBalance: [{ playerIndex: number; balance: number }] = [
+  @observable indexAndBalance: [PlayerIndexBalance] = [
     { playerIndex: DEFAULT_PLAYER_INDEX, balance: DEFAULT_PLAYER_INDEX },
   ];
-  @observable players: { money: number; currentBet: number }[] = [
+  //balance ===  moneye???
+  @observable players: {
+    playerIndex: number;
+    balance: number;
+    money: number;
+    currentBet: number;
+    hand: Cards[];
+  }[] = [
     {
+      playerIndex: DEFAULT_PLAYER_INDEX,
+      balance: DEFAULT_PLAYER_INDEX,
       money: DEFAULT_POT,
       currentBet: DEFAULT_POT,
+      hand: [],
     },
   ];
 
@@ -63,16 +86,18 @@ export class ActivityStore {
       activePlayer,
       playerWon,
       pot,
+      currentMaxBet,
       checkResult,
       players,
       indexAndBalance,
     } = newCurrentState;
     this.commonCards = changeCardNaming([commonCards])[0] as CommonCards;
     this.pot = pot;
+    this.currentMaxBet = currentMaxBet;
     this.checkResult = checkResult;
     this.playerWon = playerWon;
     this.activePlayer = activePlayer;
-    this.players = [players];
+    this.players = players;
     this.indexAndBalance = indexAndBalance;
   }
 }
