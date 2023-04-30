@@ -14,8 +14,8 @@ export const Player = (props: Props) => {
     <>
       <div className="player">
         <div className="cards">
-          <Card card={cards[0][0]} />
-          <Card card={cards[0][1]} />
+          <Card card={cards[0]} />
+          <Card card={cards[1]} />
         </div>
         <div className="playerName balance avatar">{name}</div>
       </div>
