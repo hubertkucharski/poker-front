@@ -88,5 +88,7 @@
   .players{
     display: flex;
   }
-  .container{}
+  .result {
+    font-size: 1rem;
+  }
 }
