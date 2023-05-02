@@ -25,7 +25,7 @@
 
 # Screenshots
 Game play:
-https://user-images.githubusercontent.com/35075404/235676711-3168ca75-ae4f-4f47-a11b-0719706eb6e8.png
+![image](https://user-images.githubusercontent.com/35075404/235676711-3168ca75-ae4f-4f47-a11b-0719706eb6e8.png)
 
 Winning result:
 https://user-images.githubusercontent.com/35075404/235676385-4a497ee6-acd3-452a-979e-34c53170eb62.png
