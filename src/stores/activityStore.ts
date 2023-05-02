@@ -24,8 +24,8 @@ export interface CurrentState {
   playerWon: number;
   checkResult: string;
   activePlayer: number;
-  players: [PlayersFinalResults];
-  indexAndBalance: [PlayerIndexBalance];
+  players: PlayersFinalResults[];
+  indexAndBalance: PlayerIndexBalance[];
 }
 
 const DEFAULT_COMMON_CARDS = ["", "", "", "", ""];
@@ -47,7 +47,7 @@ export class ActivityStore {
   @observable playerWon: number = DEFAULT_PLAYER_INDEX;
   @observable activePlayer: number = DEFAULT_PLAYER_INDEX;
   @observable checkResult: string = "";
-  @observable indexAndBalance: [PlayerIndexBalance] = [
+  @observable indexAndBalance: PlayerIndexBalance[] = [
     { playerIndex: DEFAULT_PLAYER_INDEX, balance: DEFAULT_PLAYER_INDEX },
   ];
   //balance ===  moneye???

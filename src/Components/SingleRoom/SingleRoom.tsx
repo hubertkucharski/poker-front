@@ -1,7 +1,7 @@
 import "./SingleRoom.css";
 import { Player } from "../Player/Player";
 import { Card } from "../Card/Card";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import "react-awesome-button/dist/styles.css";
 import FunctionalButtons from "../FunctionalButtons/FunctionalButtons";
 import { observer } from "mobx-react-lite";
@@ -15,6 +15,7 @@ import {
 import { socketService } from "../../services/socket.service";
 import { Cards, changeCardNaming } from "../utils/changeCardNaming";
 import { CommonCards } from "../../types/types";
+import { AwesomeButton } from "react-awesome-button";
 
 export interface PlayerCards {
   playerIndex: number;
@@ -71,9 +72,14 @@ export const SingleRoom = observer(() => {
       return playerCards;
     } else return DEFAULT_PLAYER_CARDS;
   };
+  const startNewRound = async (
+    e: React.MouseEvent<HTMLButtonElement> & { target: { value: string } }
+  ) => {
+    e.preventDefault();
+    socketService.emitInitNewGame();
+  };
   return (
     <>
-      <div></div>
       <div className="single-room-container">
         <div className="pot">Pot: {pot}</div>
         <div className="common-cards">
@@ -88,20 +94,29 @@ export const SingleRoom = observer(() => {
               checkResult && ", with: "
             }${checkResult}.`}
         </div>
-        {players.map((player) => (
-          <div
-            key={player.playerIndex}
-            className={`container container-p${+player.playerIndex + 1}`}
-          >
-            <Player
-              name={`Player no. ${player.playerIndex} | Chips: ${player.balance}`}
-              cards={getPlayerCards(player)}
-            />
-            {player.currentBet}
-            <FunctionalButtons />
-          </div>
-        ))}
-        {+playerIndex === activePlayer && <FunctionalButtons />}
+        <article className="players">
+          {players.map((player) =>
+            player.playerIndex < 0 ? (
+              ""
+            ) : (
+              <div
+                key={player.playerIndex}
+                className={`container container-p${+player.playerIndex + 1}`}
+              >
+                <Player player={player} cards={getPlayerCards(player)} />
+                {activePlayer < 0 ? (
+                  <div className="functional-buttons">
+                    <AwesomeButton type="primary" onPress={startNewRound}>
+                      Start Game
+                    </AwesomeButton>
+                  </div>
+                ) : (
+                  <FunctionalButtons />
+                )}
+              </div>
+            )
+          )}
+        </article>
       </div>
     </>
   );

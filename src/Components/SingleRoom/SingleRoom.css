@@ -9,6 +9,7 @@
 }
 
 .container {
+  padding: 1rem;
   display: flex;
   position: fixed;
   --left-right-vw: 30vw;
@@ -74,4 +75,18 @@
   position: fixed;
   bottom: 2vw;
   left: 50vw;
+}
+
+@media (max-width: 750px){
+  .players .container{
+    position: relative;
+    left: 0;
+    top: 0;
+    bottom: auto;
+    right: auto;
+  }
+  .players{
+    display: flex;
+  }
+  .container{}
 }

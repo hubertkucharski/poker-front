@@ -1,3 +1,8 @@
 .playing-card {
   height: 7rem;
 }
+@media (max-width: 750px){
+  .playing-card{
+    height: 4.5rem;
+  }
+}
