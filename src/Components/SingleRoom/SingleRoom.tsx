@@ -88,6 +88,7 @@ export const SingleRoom = observer(() => {
           ))}
         </div>
         <div className="result">
+          {players.length < 2 && `Wait for at least one more player.`}
           {activePlayer >= 0 && `Waiting for player no. ${activePlayer}.`}
           {playerWon === DEFAULT_PLAYER_INDEX ||
             `Player number ${playerWon} wins${
