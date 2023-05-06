@@ -9,7 +9,8 @@ function App() {
     <ActivityStoreContext.Provider value={new ActivityStore()}>
       <Router>
         <Routes>
-          <Route path="/single-room" element={<SingleRoom />} />
+          <Route path="/" element={<SingleRoom />} />
+          {/*<Route path="/single-room" element={<SingleRoom />} />*/}
           {/*<Route path="/poker-room/:roomId" element={<Chat/>} />*/}
         </Routes>
       </Router>

@@ -3,6 +3,7 @@
 
 ## Online Hold'em Poker is a web-based poker game where players can play Texas Hold'em Poker against each other in real-time over the internet. The game is built using the React framework for the front-end, the NestJS framework and Socket.io for the back-end, and MySQL for the database.
 
+## Demo: http://poker.hubertk.pl/
 
 ##### More about poker rules you can read here: https://upswingpoker.com/poker-rules/
 
